@@ -1,4 +1,5 @@
 <!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0e0f12"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><link rel="apple-touch-icon" href="icon-192.png">
 <title>폐허의 대결</title>
 <style>
 :root{--bg:#0e0f12;--fg:#f1f1f1;--pn:rgba(20,22,28,.92);--ac:#e8503a;color-scheme:dark}
@@ -325,7 +326,7 @@ function say(t,ms=2500){$('msg').textContent=t;if(ms)setTimeout(()=>{if($('msg')
 let nr=null;const em=(t,d)=>{if(nr)nr.emit(t,d)};
 const myId=()=>nr?(nr.peers().find(p=>p.isMe&&p.sameTab)||{}).peer:'me';
 let CE='';
-const SERVER='wss://이름.onrender.com';
+const SERVER='wss://ruins-game.onrender.com';
 function mkNet(code){return new Promise((res,rej)=>{let ws;try{ws=new WebSocket(SERVER)}catch(e){CE='서버 주소가 잘못됐어요.';return rej(0)}
  const H={},PC=[];let me=null,peers=[],done=0;const tx=o=>ws.readyState===1&&ws.send(JSON.stringify(o));
  const o={emit:(t,d)=>tx({k:'e',t,d}),on:(t,f)=>{H[t]=f},presence:p=>tx({k:'p',p}),peers:()=>peers,onPeers:f=>PC.push(f)};
@@ -525,4 +526,4 @@ $('qm').onclick=async()=>{const md=mode;try{await conn('qm'+md)}catch(e){return 
  setTimeout(()=>{if(S.run)return;const ps=nr.peers().filter(p=>p.kind==='viewer').map(p=>p.peer).sort();if(ps[0]===myId()){const g=ps.find(p=>p!==myId()),d={mode:md,seed:R2()*1e9|0,h:myId(),g:g||null};em('start',d);begin(d)}},7000)};
 $('go').onclick=()=>{const g=nr.peers().find(p=>!p.isMe&&p.kind==='viewer'),d={mode,seed:R2()*1e9|0,h:myId(),g:g?g.peer:null};em('start',d);begin(d)};
 $('pr').onclick=()=>{S.myId='me';begin({mode,seed:R2()*1e9|0,h:'me',g:null})};
-</script></body></html>
+</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script></body></html>
